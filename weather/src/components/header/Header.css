@@ -1,0 +1,53 @@
+:root{
+    --darkteal: #1A5276;
+    --dark: #212F3C;
+    --blue: #5499C7;
+    --lightblue: #c4e7fb;
+    --gray: #AAB7B8;
+    --lightgray: #E5E8E8;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Work+Sans');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+.header {
+    background-color: var(--darkteal);
+}
+
+.header h2 {
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--lightgray);
+    font-family: 'Work Sans';
+}
+
+.nav-button {
+    background-color: var(--blue);
+    color: var(--dark);
+}
+
+.nav-button, .nav-button-active {
+    font-family: 'Roboto';
+}
+
+.nav-button:hover, .search-button:hover {
+    color: var(--lightblue);
+}
+
+.nav-button-active{
+    background-color: var(--lightblue);
+    color: var(--darkteal);
+}
+
+.nav-button-active:hover{
+    color: var(--blue);
+}
+
+.nav-pills {
+    border-color: transparent;
+}
+
+.search-button, .search-button:active {
+    background-color: var(--dark);
+    color: var(--gray);
+}
