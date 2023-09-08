@@ -1,6 +1,7 @@
 import React from "react";
-import Search from "../pages/forecast/SearchBar";
 import './Header.css'
+
+// make btns and stuff a dropdown menu on shrink
 
 export default function Header({ currentPage, changePage }){
     return(
@@ -25,9 +26,15 @@ export default function Header({ currentPage, changePage }){
                         Get Random Forecast!
                     </a>
                 </li>
-                
                 <li className="nav-item">
-                    <Search />
+                    <form class="form-inline d-flex">
+                        <input class="form-control mx-2" type="search" placeholder="Search for a city" aria-label="Search"></input>
+                        <button 
+                            class="nav-link search-button"
+                            type="submit"
+                            onClick={() => changePage('Forecast')}
+                            >Search</button>
+                    </form>
                 </li>
             </ul>
         </nav>

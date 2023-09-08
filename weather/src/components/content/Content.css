@@ -10,3 +10,7 @@
 .sec {
     background-color: var(--lightblue);
 }
+
+.forecast-font {
+    font-size: 15px;
+}
