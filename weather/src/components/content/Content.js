@@ -22,7 +22,7 @@ export default function Content(){
     const changePage = (page) => setCurrentPage(page);
 
     return(
-        <div>
+        <div className="sec justify-content-center">
             <Header currentPage={currentPage} changePage={changePage}/>
             {renderPage()}
             <Footer />
