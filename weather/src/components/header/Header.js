@@ -1,10 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import Search from "../search/SearchForecast";
 import './Header.css'
 
 // make btns and stuff a dropdown menu on shrink
 
-export default function Header({ currentPage, changePage }){
+export default function Header({ currentPage, changePage, currentCity, changeCity }){
     return(
         <nav className="navbar navbar-light justify-content-between header d-flex">
             <h2 className="mx-4">Weather Forecast</h2>
@@ -27,7 +27,7 @@ export default function Header({ currentPage, changePage }){
                         Get Random Forecast!
                     </a>
                 </li>
-                <Search changePage={changePage}/>
+                <Search changePage={changePage} changeCity={changeCity} currentCity={currentCity}/>
             </ul>
         </nav>
     )
