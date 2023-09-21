@@ -7,13 +7,13 @@ export default function Search({changePage}){
     const changeCity = (city) => setCurrentCity(city);
     const cityRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/
     // return statement w/ forecast or smth
-    const handleClick = () => {
+    const handleClick = async () => {
         // city search
         const searchBar = ref.current;
         let searchVal = searchBar.value
         if (cityRegex.test(searchVal)){
             changeCity(searchVal);
-            localStorage.setItem("city", currentCity);
+            await localStorage.setItem("city", currentCity);
         } else {
             console.log('oopsyunggravy.mp3');
         }
@@ -21,7 +21,7 @@ export default function Search({changePage}){
     }
     
     useEffect(() => {console.log(currentCity)});
-    // useEffect(() => {localStorage.setItem("city", currentCity)})
+    useEffect(() => {localStorage.setItem("city", currentCity)})
 
     return (
         <li className="nav-item">

@@ -14,12 +14,13 @@ export default function Forecast(){
             paddingTop: 30
         }
     }
-        const cityNameFetch = () => {
-            const searchCity = JSON.stringify(localStorage.getItem('city'));
+        const cityNameFetch = async () => {
+            const searchCity = await JSON.stringify(localStorage.getItem('city'));
             const geocodeReqURL = `https://api.openweathermap.org/geo/1.0/direct?q=${searchCity}&limit=1&appid=${apiKey}`;
             fetch(geocodeReqURL).then((res) => {return res.json()})
             .then((data) => {
                 console.log(data);
+                console.log(searchCity);
                 // let currentLat = data[0].lat;
                 // let currentLon = data[0].lon;
                 // console.log(currentLat, currentLon);
