@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 
-export default function Search({changePage}){
-    const [currentCity, setCurrentCity] = useState('');
+export default function Search({ changePage, changeCity }){
+    // const [currentCity, setCurrentCity] = useState('');
     const ref = useRef(null);
-    
-    const changeCity = (city) => setCurrentCity(city);
     const cityRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]+$/
     // return statement w/ forecast or smth
     const handleClick = async () => {
@@ -12,16 +10,15 @@ export default function Search({changePage}){
         const searchBar = ref.current;
         let searchVal = searchBar.value
         if (cityRegex.test(searchVal)){
-            changeCity(searchVal);
-            await localStorage.setItem("city", currentCity);
+            await changeCity(searchVal);
         } else {
             console.log('oopsyunggravy.mp3');
         }
         
     }
     
-    useEffect(() => {console.log(currentCity)});
-    useEffect(() => {localStorage.setItem("city", currentCity)})
+    // useEffect(() => {console.log(currentCity)});
+    // useEffect(() => {localStorage.setItem("city", currentCity)});
 
     return (
         <li className="nav-item">
@@ -35,7 +32,6 @@ export default function Search({changePage}){
                         e.preventDefault();
                         handleClick();
                         changePage('Forecast');
-                        // changeCity(props.city);
                     }}
                     >Search</button>
             </form>

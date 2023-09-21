@@ -7,12 +7,13 @@ import Random from "../pages/Random";
 
 export default function Content(){
     const [currentPage, setCurrentPage] = useState('Home');
+    const [currentCity, setCurrentCity] = useState('');
     const renderPage = () => {
         if (currentPage === 'Home'){
             return <Home />
         }
         if (currentPage === 'Forecast'){
-            return <Forecast />
+            return <Forecast currentCity={currentCity}/>
         }
         if (currentPage === 'Random'){
             return <Random />
@@ -20,10 +21,11 @@ export default function Content(){
     };
 
     const changePage = (page) => setCurrentPage(page);
+    const changeCity = (city) => setCurrentCity(city);
 
     return(
         <div className="sec justify-content-center">
-            <Header currentPage={currentPage} changePage={changePage}/>
+            <Header currentPage={currentPage} changePage={changePage} changeCity={changeCity} currentCity={currentCity}/>
             {renderPage()}
             <Footer />
         </div>
