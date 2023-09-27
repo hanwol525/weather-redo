@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 
 export default function Search({ changePage, changeCity }){
     // const [currentCity, setCurrentCity] = useState('');
@@ -11,15 +11,13 @@ export default function Search({ changePage, changeCity }){
         let searchVal = searchBar.value
         if (cityRegex.test(searchVal)){
             await changeCity(searchVal);
+            return
         } else {
-            console.log('oopsyunggravy.mp3');
+            console.log('not a valid city name');
         }
         
     }
     
-    // useEffect(() => {console.log(currentCity)});
-    // useEffect(() => {localStorage.setItem("city", currentCity)});
-
     return (
         <li className="nav-item">
             <form className="form-inline d-flex">
@@ -38,55 +36,3 @@ export default function Search({ changePage, changeCity }){
         </li>
     )
 }
-
-// export default function Search(props){
-//     let dailyWeather;
-//     let dailyWind;
-//     let dailyHum;
-//     let tempAvg;
-//     let humAvg;
-//     let windAvg;
-
-//     const cityNameFetch = (cityName) => {
-//         let geocodereqURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + cityName + '&limit=1&appid=';
-//         fetch(geocodereqURL).then((res) => {return res.json()})
-//         .then((data) => {
-//             let currentLat = data[0].lat;
-//             let currentLon = data[0].lon;
-//             if (currentLat === undefined || currentLon === undefined){
-//                 console.log("oops");
-//             } else {
-//                 coordsFetch(currentLat, currentLon)
-//             }
-//         })
-//     }
-
-//     cityNameFetch(props.city)
-
-//     const coordsFetch = (lat, lon) => {
-//         let fiveDayCoords = `api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=5&appid=${apiKey}&units=imperial`;
-//         let dailyCoords = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
-//         fetch(dailyCoords).then((res) => {
-//             return res.json()
-//         }).then((data) => {
-//             dailyWeather = data.main.temp;
-//             dailyWind = data.wind.speed;
-//             dailyHum = data.main.humidity;
-//             return dailyWeather, dailyWind, dailyHum
-//         });
-
-//         // for loop to iterate thru api response for 5 day
-//         fetch(fiveDayCoords).then((res) => {
-//             return res.json()
-//         }).then((data) => {
-//             for (let i = 0; i < data.list.length; i++){
-//                 tempAvg = data.list[i].temp.day;
-//                 humAvg = data.list[i].humidity;
-//                 windAvg = data.list[i].speed;
-//             }
-
-
-//         })
-//     };
-
-// }
