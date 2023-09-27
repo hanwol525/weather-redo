@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Daily from "./Daily";
-import SingleDay from "./FiveDaySingle"
+import SingleDay from "./ThreeDaySingle"
 import '../../content/Content.css';
 import { data } from "jquery";
+import dayjs from "dayjs";
 const apiKey = process.env.REACT_APP_API_KEY;
 
 export default function Forecast({currentCity}){
@@ -13,74 +14,54 @@ export default function Forecast({currentCity}){
         }
     }
 
-    // daily forecast
-    const [dailyWeather, setDailyWeather] = useState('');
-    const [dailyHum, setDailyHum] = useState('');
-    const [dailyWind, setDailyWind] = useState('');
-    const [dailyLow, setDailyLow] = useState('');
-    const [dailyHigh, setDailyHigh] = useState('');
-    const changeDailyWeather = (temp) => setDailyWeather(temp);
-    const changeDailyHum = (hum) => setDailyHum(hum);
-    const changeDailyWind = (wind) => setDailyWind(wind);
-    const changeDailyLow = (low) => setDailyLow(low);
-    const changeDailyHigh = (high) => setDailyHigh(high);
+    const [current, setCurrent] = useState({ src: '', weather: '', temp: '', hum: '', wind: ''})
+    const [dayOne, setDayOne] = useState({ src: '', day: 'Today', forecast: '', temp: '', hum: '', wind: ''})
+    const [dayTwo, setDayTwo] = useState({ src: '', day: '', forecast: '', high: '', low: '', hum: '', wind: ''})
+    const [dayThree, setDayThree] = useState({ src: '', day: '', forecast: '', temp: '', hum: '', wind: ''})
 
-    // 5-day forecast
 
-    // get daily data
-    const dailyCoordsFetch = (lat, lon) => {
-        let dailyCoords = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
-        fetch(dailyCoords).then((res) => {
+    const weatherFetch = () => {
+        let weatherInfo = `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${currentCity}&days=3&aqi=no&alerts=no`
+        fetch(weatherInfo).then((res) => {
             return res.json()
         }).then((data) => {
             console.log(data);
-            const dailyWeatherRound = Math.floor(data.main.temp);
-            const dailyHumRound = Math.floor(data.main.humidity);
-            const dailyWindRound = Math.floor(data.wind.speed);
-            const dailyLowRound = Math.floor(data.main.temp_min);
-            const dailyHighRound = Math.floor(data.main.temp_max);
-            changeDailyWeather(dailyWeatherRound);
-            changeDailyHum(dailyHumRound);
-            changeDailyWind(dailyWindRound);
-            changeDailyLow(dailyLowRound);
-            changeDailyHigh(dailyHighRound);
+            setCurrent({ src: data.current.condition.icon,
+                weather: data.current.condition.text, 
+                temp: Math.round(data.current.temp_f), 
+                hum: Math.round(data.current.humidity), 
+                wind: Math.round(data.current.wind_mph)});
+            setDayOne({ src: data.forecast.forecastday[0].day.condition.icon,
+                day: 'Today',
+                forecast: data.forecast.forecastday[0].day.condition.text,
+                temp: Math.round(data.forecast.forecastday[0].day.avgtemp_f),
+                hum: Math.round(data.forecast.forecastday[0].day.avghumidity),
+                wind: Math.round(data.forecast.forecastday[0].day.maxwind_mph)})
+            setDayTwo({ src: data.forecast.forecastday[1].day.condition.icon,
+                day: dayjs(data.forecast.forecastday[1].date).format('MM/DD'),
+                forecast: data.forecast.forecastday[1].day.condition.text,
+                temp: Math.round(data.forecast.forecastday[1].day.avgtemp_f),
+                hum: Math.round(data.forecast.forecastday[1].day.avghumidity),
+                wind: Math.round(data.forecast.forecastday[1].day.maxwind_mph)})
+            setDayThree({ src: data.forecast.forecastday[2].day.condition.icon,
+                day: dayjs(data.forecast.forecastday[2].date).format('MM/DD'),
+                forecast: data.forecast.forecastday[2].day.condition.text,
+                temp: Math.round(data.forecast.forecastday[2].day.avgtemp_f),
+                hum: Math.round(data.forecast.forecastday[2].day.avghumidity),
+                wind: Math.round(data.forecast.forecastday[2].day.maxwind_mph)})
+            
         })
     }
 
-    // get five day data
-    const fiveDayCoordsFetch = (lat, lon) => {
-        let fiveDayCoords = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
-        fetch(fiveDayCoords).then((res) => {
-            return res.json()
-        }).then((data) => {
-            console.log(data);
-            // basically pushing everything to arrays and sorting w/ reduce fxn; take high and low?
-        })
-    }
-
-    // geocode for daily and five day
-    const cityNameFetch = () => {
-        const geocodeReqURL = `https://api.openweathermap.org/geo/1.0/direct?q=${currentCity}&limit=1&appid=${apiKey}`;
-        fetch(geocodeReqURL).then((res) => {return res.json()})
-        .then((data) => {
-            let currentLat = data[0].lat;
-            let currentLon = data[0].lon;
-            dailyCoordsFetch(currentLat, currentLon);
-            fiveDayCoordsFetch(currentLat, currentLon);
-        })
-    }
-
-    cityNameFetch();
+    useEffect(() => weatherFetch(), [currentCity])
 
     return (
         <div className="sec" style={styles.forecast}>
-            <Daily src={imgSrc} temp={dailyWeather} hum={dailyHum} wind={dailyWind} low={dailyLow} high={dailyHigh}/>
-            <div className="d-flex row my-3 five-day-sec">
-                <SingleDay src={imgSrc}/>
-                <SingleDay src={imgSrc}/>
-                <SingleDay src={imgSrc}/>
-                <SingleDay src={imgSrc}/>
-                <SingleDay src={imgSrc}/>
+            <Daily src={current.src} weather={current.weather} temp={current.temp} hum={current.hum} wind={current.wind}/>
+            <div className="d-flex row">
+                <SingleDay src={dayOne.src} day={dayOne.day} forecast={dayOne.forecast} temp={dayOne.temp} low={dayOne.low} hum={dayOne.hum} wind={dayOne.wind}/>
+                <SingleDay src={dayTwo.src} day={dayTwo.day} forecast={dayTwo.forecast} temp={dayTwo.temp} low={dayTwo.low} hum={dayTwo.hum} wind={dayTwo.wind}/>
+                <SingleDay src={dayThree.src} day={dayThree.day} forecast={dayThree.forecast} temp={dayThree.temp} low={dayThree.low} hum={dayThree.hum} wind={dayThree.wind}/>
             </div>
         </div>
     )

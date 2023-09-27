@@ -19,10 +19,32 @@
 
 #daily-sec {
     background-color: red;
+    font-size: 18px;
+    max-width: 40%;
 }
 
-#five-day-single {
+#three-day-single {
     background-color: blue;
+    max-width: 25%;
+}
+
+#three-day-date {
+    font-size: 20px;
+}
+
+.three-day-text {
+    font-size: 18px
+}
+
+#three-day-icon, #current-icon {
+    max-width: 64px;
+}
+
+@media screen and (min-width: 1900px) {
+    #three-day-single {
+        background-color: pink;
+        max-width: 20%;
+    }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1279px) {
@@ -30,22 +52,26 @@
         min-width: min-content;
     }
 
-    #five-day-single {
+    #three-day-single {
         background-color: green;
+        max-width: 30%;
     }
 
-    #five-day-icon {
-        max-width: 50%;
+    .three-day-text {
+        font-size: 12px;
     }
+
 }
 
 @media screen and (min-width: 390px) and (max-width: 767px) {
     #daily-sec {
-        min-width: fit-content;
+        /* min-width: fit-content; */
+        max-width: 84%;
     }
 
-    #five-day-single {
+    #three-day-single {
         background-color: purple;
+        max-width: 80%;
     }
 }
 
